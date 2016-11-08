@@ -4,21 +4,32 @@
 		<title>Matematica Financeira II</title>
 		<script type= "text/javascript" src= ".\js\index.js"></script>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="./css/index.css">
 	</head>
 	
-	<body background= ".\img\images.jpg"> 
+	<body> 
 	<!--center-->
-		<font color="white">
-			<p>
-				<b>SOMA:</b><br/> <input type="" id="soma" value="" maxlength ="10" style="width:300px" onblur="calcular()"   /> <br/> 
-				<b>RAZÃO:</b><br/> <input type="" id="razao" value="" maxlength ="10" style="width:300px" onblur="calcular"() /> <br/>
-				<b>TAXA:</b><br/> <input type="" id="taxa" value="" maxlength ="10" style="width:300px" onblur="calcular()"   /> <br/>
-				<b>TEMPO:</b><br/> <input type="" id="tempo" value="" maxlength ="10 "style="width:300px" onblur="calcular()" /> <br/>
-				<p><b><label>MENSAGEM:</label></b><br><textarea id="msg" cols="35" rows="23" style="width:300px" onfocus="calcular()"></textarea>		<br/>
-				<p><b>RESULTADO FINAL:</b><br/><input type="" id="resultadoFinal" value="" maxlength ="20" style="width:300px" onfocus="calcular()" />
-			</p>
-
-		</font>
-	<!--/center-->	
+	<div class="todoCorpo">
+				<p>
+					<b>SOMA:</b><br/> <input type="" id="soma" value="" maxlength ="10" style="width:300px" onfocus="calcular()"   /> <br/> 
+					<b>RAZÃO:</b><br/> <input type="" id="razao" value="" maxlength ="10" style="width:300px" onfocus="calcular()" /> <br/>
+					<b>TAXA:</b><br/> <input type="" id="taxa" value="" maxlength ="10" style="width:300px" onfocus="calcular()"   /> <br/>
+					<b>TEMPO(em meses):</b><br/> <input type="" id="tempo" value="" maxlength ="10 "style="width:300px" onfocus="calcular()" /> <br/>
+					
+					<form action="">
+						<input type="radio" id= "rad_1" name="tipoCalculo" value="fac" onblur="calcular()"> FAC - Fator de Acumulação de Capital<br>
+						<input type="radio" id= "rad_2" name="tipoCalculo" value="fac" onblur="calcular()"> FFC - Fator de Formação de Capital<br>
+						<input type="radio" id= "rad_3" name="tipoCalculo" value="sac"> SAC<br>
+						<input type="radio" id= "rad_4" name="tipoCalculo" value="fvc"> FVC
+					</form>
+					
+					<p><b><label>MENSAGEM:</label></b><br><textarea id="msg" cols="35" rows="23" style="width:300px" onfocus="calcular()"></textarea>		<br/>
+					<p><b>RESULTADO FINAL:</b><br/><input type="" id="resultadoFinal" value="" maxlength ="20" style="width:300px" onfocus="calcular()" />
+				</p>
+				
+				<button type="button" onclick = "limpar()">Click Me!</button>
+		<!--/center-->	
+	</div>
 	</body>
 </html>	
