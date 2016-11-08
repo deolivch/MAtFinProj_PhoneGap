@@ -1,0 +1,14 @@
+body
+{
+	#background-image: url("../img/image2.jpg");
+	color: black;
+    font-size: 100%;
+}
+div.todoCorpo{
+	position: relative;
+	top: 80px;
+    width: 400px;
+	left: 400px;
+    height: 800px;
+    border: 0px solid #73AD21;
+}
