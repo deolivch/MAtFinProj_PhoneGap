@@ -1,132 +1,1003 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
 
-<!DOCTYPE HTML>
-<html lang="pt-br" dir="ltr">
+    <title>CALCULADORA FINACEIRA</title>
+    
+    <meta http-equiv="Content-Language" content="pt-br">
+    <link rel="stylesheet" href="css/kendo/kendo.common.min.css" />
+    <link rel="stylesheet" href="css/kendo/kendo.silver.min.css" />
+    <link rel="stylesheet" href="css/kendo/kendo.mobile.all.min.css" />
 
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		  <base href="http://www.calculadoraonline.com.br/financiamento" />
-		  <meta name="keywords" content="calculadora, financiamento, sac, price, taxa de juros, tempo, prestaÃ§Ã£o, montante, anÃ¡lise, Ã­ndice, grÃ¡fico, banco central, caixa, interativo, pizza, colunas" />
-		  <meta name="description" content="Calculadora de financiamento com grÃ¡ficos interativos e anÃ¡lise. Calcula todas as incÃ³gnitas de um financiamento pela tabela Price e SAC." />
-		  <meta name="generator" content="Joomla! - Open Source Content Management" />
-		  <title>Calculadora Online - Financiamento pela Tabela Price ou SAC</title>
-		  <link href="http://www.calculadoraonline.com.br/component/search/?Itemid=155&amp;format=opensearch" rel="search" title="Pesquisar Calculadora Online" type="application/opensearchdescription+xml" />
-		  <link href="/templates/jp-media/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
-		  <link rel="stylesheet" href="/cache/template/gzip.php?jquery-ui.min-7d12c697.css" type="text/css" />
-		  <link rel="stylesheet" href="/cache/template/gzip.php?moedas-67a15817.css" type="text/css" />
-		  <link rel="stylesheet" href="/cache/template/gzip.php?widgetkit-09f32ead-5e927ddb.css" type="text/css" />
-		  <link rel="stylesheet" href="/cache/template/gzip.php?bootstrap-653124c1.css" type="text/css" />
-		  <style type="text/css">
+    <link rel="stylesheet" href="css/charles.css" />
+
+    <script src="js/kendo/jquery-1.12.4.min.js"></script>
+    <script src="js/kendo/jquery.min.js"></script>
+    <script src="js/kendo/kendo.all.min.js"></script>
+    <script src="js/kendo/cultures/kendo.culture.pt-BR.min.js"></script>
+
+  </head>
+<body>
+
+  <div id="hdr-bar" data-role="view" data-title="">
+
+    <header data-role="header">
+      <div data-role="navbar" class="km-navbar-buttongroup" style="line-height: 1.2;height:50px">
+        <a id="btn_home" class="nav-button" data-align="left" data-role="button" data-click="exibirHome"><font color="black">Inicio</font></a>
+        <span data-role="view-title" data-align="left" style="font-size:medium"></span>
+        <ul id="menu_btn" data-role="buttongroup" data-index="0" style="float: right; padding-top:1%; padding-right:40px" data-select="onSelect">
+          <li>Tabela Price</li>
+          <li>Tabela Sac</li>
+        </ul>
+        
+      </div>
+    </header>
+
+    <div id="form_home" style="display:block">
+      <div id="">
+        <div class="">
+          <ul class="fieldlist">
+            <li>
+                <label>Sistema de Amortização:</label>
+                <select id="f_tipo" style="width: 100%;">
+                  <option id="0">Tabela Price</option>
+                  <option id="1">Tabela SAC</option>
+                </select>
+            </li>
+            <li><label>Qual o valor Financiado:</label><input id="f_valor" style="width: 100%" /></li>
+            <li><label>Qual o Valor da <b>Entrada</b>(se houver):</label><input id="f_entrada" style="width: 100%;" /></li>
+            <li><label>Nº de Prestações:</label><input id="f_parcelas" style="width: 100%;" /></li>
+            <li><label>Data de Vencimento:</label><input id="f_data" style="width: 100%;" /></li>
+            <li><label>Qual a Taxa de Juros (%) do financiamento:</label><input id="f_juros" style="width: 100%;" /></li>
+            <li>
+              <label>Período da Taxa:</label>
+              <select id="f_pertaxa" style="width: 100%;">
+                <option id="0">Mês</option>
+                <option id="1">Ano</option>
+              </select>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <footer>
+      <div>
+      <p align ="Right">
+        <a id="btn_calc" class="nav-button" data-align="right" data-icon="" data-role="button" data-click="exibirOpcoes"><font color="black"> Calcular</font></a>
+      </p>
+      </div>
+      </footer>
+    </div>
+
+    <div id="form_price" style="display:none">
+      <ul id="panel" style="font-size: 3.5vw;">
+        <hr>
+        <li id="grid">
+          <label>Tabela</label>
+          <div id="container">
+            <div id="gridprice" class="prop-text"></div>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Valor das Prestações</label>
+          <div class="">
+            <ul class="fieldlist2">
+              <li><span id="fp_valor_prestacao" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Saldo Devedor de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fp_ordem_t" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_saldo_devedor_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Saldo Devedor de ordem (t - 1)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fp_ordem_t1" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_saldo_devedor_t1" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Primeira Amortização</label>
+          <div>
+            <ul class="fieldlist2">
+              <li><span id="fp_valor_amortizacao_1" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Parcela de Amortização de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fp_ordem_t3" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_amortizacao_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <li id="">
+          <hr>
+          <label>Amortizações acumuladas até o período (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fp_ordem_t4" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_amortizacao_ta" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Amortizações acumuladas entre os período (t) e (t + k)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fp_ordem_t5" style="padding-left:2px;width:80px;" />+<input id="fp_ordem_t5k" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_amortizacao_tk" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <li id="">
+          <hr>
+          <label>Parcela de Juros de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fp_ordem_t2" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_juros_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Juros acumulados até um tempo (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fp_ordem_t6" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_juros_ta" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Juros acumulados entre os período (t) e (t + k)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fp_ordem_t7" style="padding-left:2px;width:80px;" />+<input id="fp_ordem_t7k" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fp_valor_juros_tk" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div id="form_sac" style="display:none">
+      <ul id="panel" style="font-size: 3.5vw;">
+        <li id="grid">
+          <label>Tabela</label>
+          <div id="container">
+            <div id="gridsac" class="prop-text"></div>
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Valor da Amortização (A)</label>
+          <div class="">
+            <ul class="fieldlist2">
+              <li><span id="fs_valor_amortizacao" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Saldo Devedor de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fs_ordem_t" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_saldo_devedor_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Saldo Devedor de ordem (t - 1)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fs_ordem_t1" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_saldo_devedor_t1" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Parcela de Juros de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Ordem:<input id="fs_ordem_t2" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_juros_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Prestação de ordem (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fs_ordem_t4" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_prestacao_t" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Soma Amortizações nos período (t) á (t + k)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fs_ordem_t3" style="padding-left:2px;width:80px;" />+<input id="fs_ordem_t3k" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_amortizacao_tk" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Juros acumulados até um tempo (t)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fs_ordem_t5" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_juros_ta" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Soma dos Juros entre os período (t) e (t + k)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fs_ordem_t6" style="padding-left:2px;width:80px;" />+<input id="fs_ordem_t6k" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_juros_tk" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Soma das Prestações acumuladas</label>
+          <div>
+            <ul class="fieldlist2">
+              <li><span id="fs_valor_prestacao_ta" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Soma das Prestações entre os período (t) e (t + k)</label>
+          <div>
+            <ul class="fieldlist2">
+              <li>Período:<input id="fs_ordem_t7" style="padding-left:2px;width:80px;" />+<input id="fs_ordem_t7k" style="padding-left:2px;width:80px;" /></li>
+              <li><span id="fs_valor_prestacao_tk" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+        <hr>
+        <li id="">
+          <label>Descréscimo nas Prestações</label>
+          <div>
+            <ul class="fieldlist2">
+              <li><span id="fs_valor_decrescimo" class="valuefield" /></li>
+            </ul>
+            <p />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+
+    var tabelaPrice;
+    var tabelaSAC;
+    var app = new kendo.mobile.Application();
+    var controlId;
+
+    kendo.culture("pt-BR");
 
 
-		  </style>
-		  <script src="/cache/template/gzip.php?jquery.min-4b22c2e4.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?jquery-noconflict-188e699d.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?jquery-migrate.min-f041c8ee.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?widgetkit-a9c5ea0c-80085a20.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?jquery-ui.min-1fe9f5e8.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?datepicker-br-f7590e1c.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?date-pt-BR-d69ff564.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?time-6ef93410.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?printelement-6b9a16bd.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?gc-dcfd3d2b.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?jquery.maskMoney-3c4795ae.js" type="text/javascript"></script>
-		  <script src="/cache/template/gzip.php?calculadorafinanciamentosacprice-919d2caf.js" type="text/javascript"></script>
+    $(function () {
 
-		<link rel="apple-touch-icon-precomposed" href="/templates/jp-media/apple_touch_icon.png" />
-		<link rel="stylesheet" href="/cache/template/gzip.php?template-800c140e.css" />
-		<script src="/cache/template/gzip.php?template-45c059f2.js"></script>
-	</head>
+      //app.addClass("k-content");
+      kendo.init($(document.body));
 
-	<body id="page" class="page  isblog " data-config='{"twitter":0,"plusone":0,"facebook":0}'>
+      //kendo.data.binders.widget.buttonText = kendo.data.Binder.extend({
+      //  init: function (widget, bindings, options) {
+      //    widget.element[0].innerText = bindings.buttonText.path;
+      //  }
+      //});
 
-		<div style="padding:15px; border:1px solid #EAEAEA;border-radius:10px">
+      $(document.body).addClass("k-content");
 
-			<p>
-				Quero calcular: </br>
-				<select id="id1" style="width:100%" onchange="acalcular(this)">
-				<option value="juros">Taxa de juros</option>
-				<option value="tempo">Tempo do financiamento</option>
-				<option selected value="parcela">Valor da prestaÃ§Ã£o</option>
-				<option value="valor">Valor financiado</option>
-				</select> 
-			</p>
+      $(form_home).ready(function () {
+        $("#f_valor").kendoNumericTextBox({ format: "c", value: 1000, decimals: 2, placeholder: "Digite o valor da dívida" });
+        $("#f_entrada").kendoNumericTextBox({ format: "c", decimals: 2, value: 0, placeholder: "Digite o valor de entrada" });
+        $("#f_parcelas").kendoNumericTextBox({ format: "0", value: 5, min: 0, max: 600, step: 1, placeholder: "Digite o número de parcelas" });
+        $("#f_juros").kendoNumericTextBox({ format: "0.00", value: 2, decimals: 2, min: 0, max: 100, step: 0.1, placeholder: "Digite a taxa de juros" });
+        $("#f_pertaxa").kendoDropDownList({ index: 0, placeholder: "Selecione Mensal ou Anual" });
+        $("#f_data").kendoDatePicker({ value: new Date(), placeholder: "Digite a data da primeira parcela" });
+        $("#f_tipo").kendoDropDownList({ index: 0, placeholder: "Selecione o método de amortização" });
+        $("#b_detail").kendoButton({ icon: "refresh", click: exibirOpcoes });
 
-			<p>
-				Qual Ã© o valor da <strong>entrada</strong> (se houver)? </br>
-				<input id="id2" type="text" style="width:99%;height:25px" />
-			</p>
+        $("#taxa-switch").kendoMobileSwitch({onLabel: "a.m.", offLabel: "a.a."});
 
-			<div id="bloco1">
-				<p>
-					Qual Ã© o <strong>valor financiado</strong>? </br>
-					<input id="id3" type="text" style="width:99%;height:25px" />
-				</p>
-			</div>
+      });
 
-			<div id="bloco2">
-				<p>
-					Qual Ã© a taxa de <strong>juros</strong> do financiamento? (<a target="_empty" href="http://www.bcb.gov.br/pt-br/sfn/infopban/txcred/txjuros/Paginas/default.aspx"><strong>Clique para conhecer as Taxas de Juros de operaÃ§Ãµes de crÃ©dito - Banco Central</strong></a>)</br>
+      $("#panel_price").kendoPanelBar();
+      $("#panel_sac").kendoPanelBar();
 
-					<input id="id4" type="text" style="width:525px;height:25px;" /> % ao
-					<select id="id5" style="width:200px;position:relative;top:3px;">
-						<option value="dia">Dia</option>
-						<option value="semana">Semana</option>
-						<option value="quinzena">Quinzena</option>
-						<option selected value="mes">MÃªs</option>
-						<option value="semestre">Semestre</option>
-						<option value="ano">Ano</option>
-					</select>
-				</p>
-			</div>
+      $("#gridprice").kendoGrid();
+      $("#gridsac").kendoGrid();
 
-			<div id="bloco3">
-				<p>
-					Qual Ã© o <strong>tempo</strong> de financiamento? </br>
-						<span style="margin-right:10px;cursor:pointer;" onclick="selecto(31)"><input name="periodo" id="chk3" type="radio" style="position:relative;top:2px;" checked/> Livre</span> 
-						<span style="margin-right:10px;cursor:pointer;" onclick="selecto(32)"><input name="periodo" id="chk3_1" type="radio" style="position:relative;top:2px;"/> PerÃ­odo entre datas</span> </br>
+     // $("#btn_home").kendoButton({ icon: "group", });
+     
 
-					<div id="idtempo1" style="position:relative;top:-5px">
-						<input id="id6" type="text" style="width:527px;height:25px" /> 
-						<select id="id7" style="width:230px;position:relative;top:3px;">
-						<option selected value="mes">MÃªs</option>
-						<option value="semestre">Semestre</option>
-						<option value="ano">Ano</option>
-						</select> </br>
-					</div>
+      // access an existing PanelBar instance
+      //var panelBar = $("#panelbar").data("kendoPanelBar");
+      //panelbar.select().find("span.k-state-selected").removeClass("k-state-selected")
+      // expand the element with ID, "item1"
+      //panelBar.expand($("#item1"));
+      // expand the element with ID, "item2" without visual animations
+      //panelBar.expand($("#item2"), false);
+      // expand all list items that start with ID, "item"
+      //panelBar.expand($('[id^="item"]'));
 
-					<div id="idtempo2" style="display:none">
-						Data inicial: <input id="dt1" type="text" class="datepick" style="width:311px;"/>
-						Data final: <input id="dt2" type="text" class="datepick" style="width:311px"/>
-					</div>
-				</p>
-			</div>
+      controlId = 0;
+      showButtons(0);
+      hideButtons(1);
+      exibirHome();
 
-			<div id="bloco4"style="display:none">
-				<p>
-					Qual Ã© o <strong>valor da parcela</strong> do financiamento? </br>
-					<input id="id8" type="text" style="width:99%;height:25px" />
-				</p>
-			</div>
+    });
 
-			<div>
-				<p>
-					Qual Ã© a tabela de cÃ¡lculo do financiamento?</br>
-					<span style="cursor:pointer;" onclick="selecto(21)"><input id="chk2" name="tabela" type="radio" style="position:relative;top:2px" checked/> Price (usado geralmente em financiamento de veÃ­culos)</span></br>
-					<span style="cursor:pointer;" onclick="selecto(22)"><input id="chk2_1" name="tabela" type="radio" style="position:relative;top:2px"/> SAC (usado geralmente em financiamento de imÃ³veis)</span>
-				</p>
-			</div>
-		</div>
+    function showForm(f) {
 
-		<center style="margin-top:10px;margin-bottom:10px">
-			<a onclick="calcula()" class="button-default" href="javascript:void(0)" id="btn_calc">Calcular</a>
-			<a onclick="limpar()" class="button-default" href="javascript:void(0)" id="btn_calc">Limpar</a>
-		</center>
+      if (f == -1) {
+        if (controlId > 1) {
+          if (controlId > 1 && controlId < 2) { showForm(1); return; };
+          if (controlId > 2 && controlId < 3) { showForm(2); return; };
+        };
+        showForm(0);
+        return;
+      };
 
-		<div id="resultado"></div>
+      hideWindows(); // oculta todas as janelas e botões da barra de navegação
 
-			<!--div id="grafico" style="margin-top:20px"></div-->
+      // exibir Home
+      if (f == 0) {
+        form_home.style.display = "block";
+        showButtons(0); // exibe o botão calcular
+        controlId = 0;
+        return;
+      };
 
-		</div>
-	</body>
+      // exibe as opções do Sistema PRICE
+      if (f == 1) {
+        form_price.style.display = "block";
+        $("#menu_btn").data("kendoMobileButtonGroup").select(0); // PRICE
+        showButtons(1); // exibe os botões PRICE e SAC
+        controlId = 1;
+        return;
+      };
+
+      // exibe as opções do Sistema SAC
+      if (f == 2) {
+        form_sac.style.display = "block";
+        $("#menu_btn").data("kendoMobileButtonGroup").select(1); // SAC
+        showButtons(1); // exibe os botões PRICE e SAC
+        controlId = 2;
+        return;
+      };
+
+
+      //if (f == 1.1) {
+      //  form_gridprice.style.display = "block";
+      //  controlId = 1.1;
+      //  return;
+      //};
+
+      //if (f == 2.1) {
+      //  form_gridsac.style.display = "block";
+      //  controlId = 2.1;
+      //  return;
+      //};
+
+    };
+
+    function showButtons(option) {
+      hideButtons(option, false);
+    };
+
+    function hideButtons(option, value) {
+      var filter;
+      if (option == 0) {
+        filter = "#btn_calc";
+      } else if (option == 1) {
+        filter = "#menu_btn";
+        //filter = ".menu-option-button";
+      } else {
+        return;
+      }
+      if (value == null || value == true) {
+        app.view().header.find(filter).hide();
+      } else {
+        app.view().header.find(filter).show();
+      }
+    };
+
+    function hideWindows() {
+      hideButtons(0);
+      hideButtons(1);
+      form_home.style.display = "none";
+      form_price.style.display = "none";
+      form_sac.style.display = "none";
+
+      //form_gridprice.style.display = "none";
+      //form_gridsac.style.display = "none";
+    };
+
+  </script>
+
+  <script>
+
+    function onSelect(e) {
+      var index = this.current().index();
+      if (index == 0) { exibirOpcoesPrice(); }
+      if (index == 1) { exibirOpcoesSAC(); }
+    }
+
+
+    function exibirOpcoes() {
+      calcularDados();
+      atualizarTabelaPrice();
+      atualizarTabelaSAC();
+
+      var t = tabelaPrice.length - 1;
+
+      // inicializa os controles para Price
+      $("#fp_ordem_t").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t1").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t2").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t3").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t4").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t5").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t5k").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t6").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t7").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+      $("#fp_ordem_t7k").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosPrice, change: exibirDadosPrice });
+
+      // inicializa os controles para Price
+      $("#fs_ordem_t").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t1").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t2").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t3").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t3k").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t4").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t5").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t6").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t6k").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t7").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+      $("#fs_ordem_t7k").kendoNumericTextBox({ format: "0", value: 0, width: 50, min: 0, max: t, step: -1, spin: exibirDadosSAC, change: exibirDadosSAC });
+
+      var sistema = $('#f_tipo').prop('selectedIndex'); //0:PRICE, 1:SAC
+      if (sistema == 0) { exibirOpcoesPrice(); }
+      if (sistema == 1) { exibirOpcoesSAC(); }
+    };
+
+    function exibirHome() { showForm(0); };
+    function exibirOpcoesPrice() {
+      exibirDadosPrice();
+      showForm(1);
+    };
+
+    function exibirOpcoesSAC() {
+      exibirDadosSAC();
+      showForm(2);
+    };
+
+    function exibirDadosPrice() {
+      var dataSource = tabelaPrice;
+      var t = dataSource.length;
+      var i, v, a, k;
+
+      // valor das prestações
+      i = 1;
+      v = ((i >= 0 && i < t) ? dataSource[i].Prestacao : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_valor_prestacao", v, "c2");
+
+      // valor saldo devedor de orrdem (t)
+      i = kendo.parseInt($("#fp_ordem_t").val());
+      v = ((i >= 0 && i < t) ? dataSource[i].Saldo : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_saldo_devedor_t", v, "c2");
+
+      // valor saldo devedor de orrdem (t-1)
+      i = kendo.parseInt($("#fp_ordem_t1").val()) - 1;
+      v = ((i >= 0 && i < t) ? dataSource[i].Saldo : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_saldo_devedor_t1", v, "c2");
+
+      // valor parcela juros de orrdem (t)
+      i = kendo.parseInt($("#fp_ordem_t2").val());
+      v = ((i >= 0 && i < t) ? dataSource[i].Juros : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_valor_juros_t", v, "c2");
+
+      // valor parcela juros de orrdem (t)
+      i = 1;
+      v = ((i >= 0 && i < t) ? dataSource[i].Amortizacao : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_valor_amortizacao_1", v, "c2");
+
+      // valor parcela de amortização de ordem (t)
+      i = kendo.parseInt($("#fp_ordem_t3").val());
+      v = ((i >= 0 && i < t) ? dataSource[i].Amortizacao : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fp_valor_amortizacao_t", v, "c2");
+
+      // valor das amortizações acumuladas até o período (t)
+      i = kendo.parseInt($("#fp_ordem_t4").val());
+      a = 0;
+      for (j = 0; j <= i; j++) {
+        v = ((j >= 0 && j < t) ? dataSource[j].Amortizacao : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fp_valor_amortizacao_ta", a, "c2");
+
+      // valor das amortizações acumuladas entre os período (t) e (t + k)
+      i = kendo.parseInt($("#fp_ordem_t5").val());
+      k = kendo.parseInt($("#fp_ordem_t5k").val());
+      a = 0;
+      for (j = i; j <= i + k; j++) {
+        v = ((j >= 0 && j < t) ? dataSource[j].Amortizacao : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fp_valor_amortizacao_tk", a, "c2");
+
+      // juros acumuladas até um tempo (t)
+      i = kendo.parseInt($("#fp_ordem_t6").val());
+      a = 0;
+      for (j = 0; j <= i; j++) {
+        v = ((j >= 0 && j < t) ? dataSource[j].Juros : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fp_valor_juros_ta", a, "c2");
+
+      // Juros acumuladas entre os período (t) e (t + k)
+      i = kendo.parseInt($("#fp_ordem_t7").val());
+      k = kendo.parseInt($("#fp_ordem_t7k").val());
+      a = 0;
+      for (j = i; j <= i + k; j++) {
+        v = ((j >= 0 && j < t) ? dataSource[j].Juros : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fp_valor_juros_tk", a, "c2");
+
+    };
+
+    function exibirDadosSAC() {
+      var dataSource = tabelaSAC;
+      var t = dataSource.length;
+      var i, v, a, k;
+
+      // valor da amortização (a)
+      i = 1;
+      v = ((i >= 0 && i < t) ? dataSource[i].Amortizacao : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_valor_amortizacao", v, "c2");
+
+      // valor saldo devedor de ordem (t)
+      i = kendo.parseInt($("#fs_ordem_t").val());
+      v = ((i >= 0 && i < t) ? dataSource[i].Saldo : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_saldo_devedor_t", v, "c2");
+
+      // saldo devedor de ordem (t - 1)
+      i = kendo.parseInt($("#fs_ordem_t1").val()) - 1;
+      v = ((i >= 0 && i < t) ? dataSource[i].Saldo : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_saldo_devedor_t1", v, "c2");
+
+      // parcela de juros de ordem (t)
+      i = kendo.parseInt($("#fs_ordem_t2").val());
+      v = ((i >= 0 && i < t)  ? dataSource[i].Juros : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_valor_juros_t", v, "c2");
+
+      // prestação de ordem (t)
+      i = kendo.parseInt($("#fs_ordem_t4").val());
+      v = ((i >= 0 && i < t)  ? dataSource[i].Prestacao : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_valor_prestacao_t", v, "c2");
+
+      // soma amortizações nos período (t) á (t + k)
+      i = kendo.parseInt($("#fs_ordem_t3").val());
+      k = kendo.parseInt($("#fs_ordem_t3k").val());
+      a = 0;
+      for (j = i; j <= i + k; j++) {
+        v = ((j >= 0 && j < t)  ? dataSource[j].Amortizacao : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fs_valor_amortizacao_tk", a, "c2");
+
+      // juros acumulados até um tempo (t)
+      i = kendo.parseInt($("#fs_ordem_t5").val());
+      v = ((i >= 0 && i < t)  ? dataSource[i].Juros : null);
+      v = ((v == null) ? 0 : v);
+      setValue("fs_valor_juros_ta", v, "c2");
+
+      // soma dos juros entre os período (t) e (t + k)
+      i = kendo.parseInt($("#fs_ordem_t6").val());
+      k = kendo.parseInt($("#fs_ordem_t6k").val());
+      a = 0;
+      for (j = i; j <= i + k; j++) {
+        v = ((j >= 0 && j < t)  ? dataSource[j].Juros : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fs_valor_juros_tk", a, "c2");
+
+      // soma das prestações acumuladas
+      i = t;
+      a = 0;
+      for (j = 0; j <= i; j++) {
+        v = ((j >= 0 && j < t)  ? dataSource[j].Prestacao : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fs_valor_prestacao_ta", a, "c2");
+
+      // soma das prestações entre os período (t) e (t + k)
+      i = kendo.parseInt($("#fs_ordem_t7").val());
+      k = kendo.parseInt($("#fs_ordem_t7k").val());
+      a = 0;
+      for (j = i; j <= i + k; j++) {
+        v = ((j >= 0 && j < t)  ? dataSource[j].Prestacao : null);
+        v = ((v == null) ? 0 : v);
+        a += v;
+      };
+      setValue("fs_valor_prestacao_tk", a, "c2");
+
+      // descréscimo nas prestações
+      i = 0;
+      a = 0;
+      setValue("fs_valor_decrescimo", a, "c2"); // NÃO IMPLEMENTADO
+
+    };
+
+    function atualizarTabelaPrice() {
+      atualizarGrid($("#gridprice"), tabelaPrice);
+    };
+
+    function atualizarTabelaSAC() {
+      atualizarGrid($("#gridsac"), tabelaSAC);
+    };
+
+    function atualizarGrid(grid, matriz) {
+
+      var gtab = grid.kendoGrid({
+        dataSource: {
+          data: matriz,
+          serverSorting: "true",
+          serverPaging: "true",
+          aggregate:
+            [
+              { field: "Juros", aggregate: "sum" },
+              { field: "Prestacao", aggregate: "sum" },
+              { field: "Prestacao", aggregate: "min" },
+              { field: "Prestacao", aggregate: "max" }
+            ],
+          schema: {
+            culture: "en-GB",
+            model: {
+              fields: {
+                Parcela: { type: "number" },
+                Data: { type: "date" },
+                Prestacao: { type: "number" },
+                Juros: { type: "number" },
+                Amortizacao: { type: "number" },
+                Saldo: { type: "number" }
+              }
+            }
+          },
+        },
+        //toolbar: ["pdf"],
+        scrollable: false,
+        resizable: true,
+        columns: [
+            { field: "Parcela", title: "Nº", format: "{0}", attributes: { style: "text-align:center;" } },
+            { field: "Data", title: "Data", format: "{0:d}", attributes: { style: "text-align:center;" } },
+            {
+              field: "Prestacao", title: "Prestação", format: "{0:c2}", attributes: { style: "text-align:right;" },
+              footerTemplate: "<div>#= kendo.toString(sum, 'c2') #</div>"
+            },
+            {
+              field: "Juros", title: "Juros", format: "{0:c2}", attributes: { style: "text-align:right;" },
+              footerTemplate: "<div>#= kendo.toString(sum, 'c2') #</div>"
+            },
+            { field: "Amortizacao", title: "Amortização", format: "{0:c2}", attributes: { style: "text-align:right;" } },
+            { field: "Saldo", title: "Saldo Devedor", format: "{0:c2}", attributes: { style: "text-align:right;" } }
+        ]
+      }).data("kendoGrid");
+
+      //for (var i = 0; i < gtab.columns.length; i++) {
+      //  gtab.autoFitColumn(i);
+      //};
+
+      gtab.dataSource.read();
+      gtab.refresh();
+
+      //gtab.autoFitColumn(0);
+      //gtab.autoFitColumn(1);
+
+    };
+
+    function calcularDados() {
+      var valor = $("#f_valor").val();
+      var entrada = $("#f_entrada").val();
+      var juros = $("#f_juros").val();
+      var parcelas = $("#f_parcelas").val();
+      var data = $("#f_data").val();
+      var sistema = $('#f_tipo').prop('selectedIndex');
+      var pertaxa = $('#f_pertaxa').prop('selectedIndex');
+      var carencia = null;
+      var valfuturo = null;
+      // criar o objeto principal para montagem da tabela
+      tabelaPrice = calcularMatriz(valor, entrada, juros, parcelas, data, carencia, 0, valfuturo, pertaxa);
+      tabelaSAC = calcularMatriz(valor, entrada, juros, parcelas, data, carencia, 1, valfuturo, pertaxa);
+    };
+
+    function calcularMatriz(valor, entrada, juros, parcelas, data, carencia, sistema, valfuturo, pertaxa) {
+      // ajusta os valores de entrada
+      valor = kendo.parseFloat(valor);
+      valor = ((valor == null || valor < 0) ? 0 : valor);
+      entrada = kendo.parseFloat(entrada);
+      entrada = ((entrada == null || entrada < 0) ? 0 : entrada);
+      carencia = kendo.parseFloat(carencia);
+      carencia = ((carencia == null || carencia < 0) ? 0 : carencia);
+      juros = ((juros == null || juros < 0) ? 0 : juros);
+      parcelas = ((juros == parcelas || parcelas < 0) ? 0 : parcelas);
+
+      // determinar a data presente
+      if ((data == null) || (!data) ? true : false) {
+        data = new Date;
+        data.setMonth(data.getMonth() + 1 + carencia);
+      } else {
+        data = new Date(kendo.parseDate(data));
+      }
+
+      var tab_price = ((sistema == null || sistema == 0) ? true : false); //0: SISTEMA PRICE, 1:SISTEMA SAC
+      var tax_anual = ((pertaxa == null || pertaxa == 0) ? true : false); //0: MENSAL, 1: ANUAL
+      var tax_juros = kendo.parseFloat(juros) / 100. / ((tax_anual == true) ? 1 : 12); // se for anual então divide por 12
+      var num_parcelas = kendo.parseInt(parcelas);
+      var val_presente = ((valor < 0 || valor < entrada) ? 0 : valor - entrada);
+      var dat_presente = data;
+      var tip_calculo = null;
+      var val_futuro = valfuturo;  // não implementado
+      var val_amortizado;
+      var val_prestacao;
+      var val_juros;
+
+      var items = [];
+
+      for (i = 0; i <= parcelas; i++) {
+        var obj = {};
+        obj['Parcela'] = i;
+        if (i == 0) {
+          obj['Data'] = null;
+          obj['Prestacao'] = null;
+          obj['Juros'] = null;
+          obj['Amortizacao'] = null;
+          obj['Saldo'] = val_presente;
+          // na tabela PRICE o valor da prestação é constante, então deve calcular uma única vez
+          if (tab_price) {
+            val_prestacao = calcularValorPrestacaoPRICE(val_presente, tax_juros, num_parcelas, val_futuro, tip_calculo);
+          } else {
+            val_amortizado = calcularValorAmortizadoSAC(val_presente, num_parcelas);
+          };
+        } else {
+          if (tab_price) {
+            val_juros = calcularValorJuros(val_presente, tax_juros);
+            val_amortizado = calcularValorAmortizadoPRICE(val_prestacao, val_juros);
+          } else {
+            val_juros = calcularValorJuros(val_presente, tax_juros);
+            val_prestacao = calcularValorPrestacaoSAC(val_amortizado, val_juros);
+          };
+          val_presente = (val_presente - val_amortizado);
+          val_presente = ((val_presente < 0) ? 0 : val_presente);
+          // atribui os dados no objeto em memória
+          obj['Data'] = new Date(dat_presente);
+          obj['Prestacao'] = val_prestacao;
+          obj['Juros'] = val_juros;
+          obj['Amortizacao'] = val_amortizado;
+          obj['Saldo'] = val_presente;
+          // posiciona a data no mês seguinte
+          dat_presente.setMonth(dat_presente.getMonth() + 1);
+        };
+        items.push(obj);
+        if (valor <= 0) {
+          break;
+        }
+      };
+      return items;
+    };
+
+    function calcularValorJuros(val_presente, taxa_juros) {
+      var J = (taxa_juros * val_presente);
+      return J;
+    };
+
+    function calcularValorPrestacaoPRICE(val_presente, taxa_juros, num_parcela, val_futuro, tipo) {
+      var a = Math.pow((1 + taxa_juros), num_parcela) * taxa_juros;
+      var b = Math.pow((1 + taxa_juros), num_parcela) - 1;
+      //a = Math.round10(a, -5);
+      //b = Math.round10(b, -5);
+      var P = (val_presente * (a / b));
+      return P;
+    };
+
+    function calcularValorPrestacaoSAC(val_amortizado, val_juros) {
+      var P = (val_amortizado + val_juros);
+      return P;
+    };
+
+    function calcularValorAmortizadoPRICE(val_prestacao, val_juros) {
+      var A = (val_prestacao - val_juros);
+      return A;
+    };
+
+    function calcularValorAmortizadoSAC(val_prestacao, num_parcela) {
+      var A = (val_prestacao / num_parcela);
+      return A;
+    };
+
+  </script>
+
+  <script>
+
+    function setValue(id, value, format) {
+      document.getElementById(id).innerHTML = kendo.toString(value, format);
+    }
+    // loads new stylesheet
+    function changeTheme(skinName, animate) {
+      var doc = document,
+          kendoLinks = $("link[href*='kendo.']"),
+          commonLink = kendoLinks.filter("[href*='kendo.common']"),
+          skinLink = kendoLinks.filter(":not([href*='kendo.common'])"),
+          href = location.href,
+          skinRegex = /kendo\.\w+(\.min)?\.css/i,
+          extension = skinLink.attr("rel") === "stylesheet" ? ".css" : ".less",
+          newSkinUrl = skinLink.attr("href").replace(skinRegex, "kendo." + skinName + "$1" + extension);
+
+      function preloadStylesheet(file, callback) {
+        var element = $("<link rel='stylesheet' href='" + file + "' \/>").appendTo("head");
+
+        setTimeout(function () {
+          callback();
+          element.remove();
+        }, 100);
+      }
+
+      function replaceTheme() {
+        var browser = kendo.support.browser,
+            oldSkinName = $(doc).data("kendoSkin"),
+            newLink;
+
+        if (browser.msie && browser.version < 10) {
+          newLink = doc.createStyleSheet(newSkinUrl);
+        } else {
+          newLink = skinLink.eq(0).clone().attr("href", newSkinUrl);
+          newLink.insertBefore(skinLink[0]);
+        }
+
+        skinLink.remove();
+
+        $(doc.documentElement).removeClass("k-" + oldSkinName).addClass("k-" + skinName);
+      }
+
+      if (animate) {
+        preloadStylesheet(url, replaceTheme);
+      } else {
+        replaceTheme();
+      }
+
+    };
+
+  </script>
+
+  <script>
+
+    (function () {
+
+      /**
+       * Decimal adjustment of a number.
+       *
+       * @param	{String}	type	The type of adjustment.
+       * @param	{Number}	value	The number.
+       * @param	{Integer}	exp		The exponent (the 10 logarithm of the adjustment base).
+       * @returns	{Number}			The adjusted value.
+       */
+      function decimalAdjust(type, value, exp) {
+        // If the exp is undefined or zero...
+        if (typeof exp === 'undefined' || +exp === 0) {
+          return Math[type](value);
+        }
+        value = +value;
+        exp = +exp;
+        // If the value is not a number or the exp is not an integer...
+        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+          return NaN;
+        }
+        // Shift
+        value = value.toString().split('e');
+        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+      }
+
+      // Decimal round
+      if (!Math.round10) {
+        Math.round10 = function (value, exp) {
+          return decimalAdjust('round', value, exp);
+        };
+      }
+      // Decimal floor
+      if (!Math.floor10) {
+        Math.floor10 = function (value, exp) {
+          return decimalAdjust('floor', value, exp);
+        };
+      }
+      // Decimal ceil
+      if (!Math.ceil10) {
+        Math.ceil10 = function (value, exp) {
+          return decimalAdjust('ceil', value, exp);
+        };
+      }
+
+    })();
+
+  </script>
+
+</body>
+
 </html>
